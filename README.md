@@ -1,5 +1,5 @@
 A Backend System for An intregalactic Trade Network.
-## For DFD(Data FLow Diagram) Visit here -> https://app.eraser.io/workspace/K6gQfUG9SFqmXzaumnPl?origin=share
+## For DFD(Data Flow Diagram) Visit here -> https://app.eraser.io/workspace/K6gQfUG9SFqmXzaumnPl?origin=share
 ## 1. Project Overview
 This project is a real-time system designed to handle trade and cargo management. It uses an event-driven architecture to trigger updates to cargo and inventory in response to changes in trade, and WebSocket integration provides real-time updates to connected clients.
 
@@ -71,6 +71,7 @@ Environment Variables: dotenv
    8. /api/getallCargo                  # fetch all cargo from database
    9. /api/inventory/:stationId          # fetch inventory details by station id
    10. /api/getinventory                 # fetch all inventories from database
+   11. /api/updates/real-time            # real-time updates using websockets
 ## 6. Event-Driven Architecture
     eventEmitter.js
           The eventprocessing.js file handles the event-driven communication between different parts of the system:
@@ -84,6 +85,6 @@ Environment Variables: dotenv
         websocketServer.js
                   The WebSocket server sends real-time updates to clients. When trades or cargo updates are made, connected clients receive events such as tradeCreate, tradeUpdated, cargoUpdated, and                                criticalEvent.
                   WebSocket URL: ws://localhost:3000/api/updates/real-time
-8. Error Handling
+8. ## Error Handling
         All API routes include basic error handling with appropriate status codes (e.g., 400, 500).
         WebSocket error handling is performed using the ws.on('error') and ws.on('close') events.
