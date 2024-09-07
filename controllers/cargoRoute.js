@@ -14,7 +14,7 @@ exports.createCargo = async (req, res) => {
 
 
 
-    if(cargo.cargoItems.length>10){
+    if(cargo.items.length>10){
         cargo.status='delayed';
     await cargo.save();
     eventEmitter.emit('criticalEvent', { message: 'Delayed shipment detected!', cargo,emailId });
