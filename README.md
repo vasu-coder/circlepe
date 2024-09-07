@@ -21,34 +21,34 @@ Package Manager: npm
 Environment Variables: dotenv
 
 ## 3. Project Structure
-   root
-│   index.js              # Main server file
-│   .env                   # Environment variables
-│   package.json           # Project dependencies and scripts
-|
-├───config
-|    ├──db.js               #configure database here
-|
-├───controllers
-|    ├──cargoRoutes.js     # API for cargo
-|    ├──tradeRoutes.js     # API for trades
-|    └──inventoryRoutes.js # API for inventories
-|
-├───models
-│   ├── Cargo.js           # MongoDB Schema for Cargo
-│   ├── Trade.js           # MongoDB Schema for Trade
-│   └── Inventory.js       # MongoDB Schema for Inventory
-│
-├───routes
-│   ├── tradeRouters.js     #  routes for Trade
-│   └── cargoRouters.js     #  routes for Cargo
-│   └── inventoryRouters.js   #  routes for Inventory
-├───utilis
-|   ├── eventprocessing.js    # Handle all events 
-|   └── errorHandler.js    # Handle error
-|   └── notificationSys.js # Handle notifications
-└───websockets
-    └── websocketServer.js # WebSocket server implementation
+root<br>
+│   index.js              # Main server file<br>
+│   .env                   # Environment variables<br>
+│   package.json           # Project dependencies and scripts<br>
+|<br>
+├───config<br>
+|    ├──db.js               #configure database here<br>
+|<br>
+├───controllers<br>
+|    ├──cargoRoutes.js     # API for cargo<br>
+|    ├──tradeRoutes.js     # API for trades<br>
+|    └──inventoryRoutes.js # API for inventories<br>
+|<br>
+├───models<br>
+│   ├── Cargo.js           # MongoDB Schema for Cargo<br>
+│   ├── Trade.js           # MongoDB Schema for Trade<br>
+│   └── Inventory.js       # MongoDB Schema for Inventory<br>
+│<br>
+├───routes<br>
+│   ├── tradeRouters.js     #  routes for Trade<br>
+│   └── cargoRouters.js     #  routes for Cargo<br>
+│   └── inventoryRouters.js   #  routes for Inventory<br>
+├───utilis<br>
+|   ├── eventprocessing.js    # Handle all events <br>
+|   └── errorHandler.js    # Handle error<br>
+|   └── notificationSys.js # Handle notifications<br>
+└───websockets<br>
+    └── websocketServer.js # WebSocket server implementation<br>
 
 ## 4.Installation and Setup
 
