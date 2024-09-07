@@ -9,6 +9,7 @@ const WebSocket = require('ws');
 require('dotenv').config();
 const app = express();
 const port = process.env.PORT;
+const eventEmitter = require("./utilis/eventprocessing");
 
 connectDB();
 app.use(express.json());
