@@ -16,6 +16,7 @@ const tradeSchema = new mongoose.Schema({
         quantity:{type:String,
             required:true}
     }],
+    destination:{type:String,required:true} ,
     status:{type:String,
         enum: ['pending', 'completed', 'canceled'],
         default:'pending'}

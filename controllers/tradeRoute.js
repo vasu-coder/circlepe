@@ -1,5 +1,5 @@
 const Trade = require("../models/trade");
-const eventEmitter = require("../utilis/eventEmitter");
+const eventEmitter = require('../utilis/eventprocessing');
 
 // Create a new trade transaction
 exports.createTrade = async (req, res) => {
@@ -9,7 +9,8 @@ exports.createTrade = async (req, res) => {
     trade.transactionId = trade._id;
     await trade.save();
     const emailId = trade.buyerEmail;
-    eventEmitter.emit('tradeUpdated',trade,emailId);
+    eventEmitter.emit('tradeCreate',trade);
+   
     res.status(201).json(trade);
 
     if(trade.items.length>5){
@@ -50,10 +51,10 @@ exports.updateTrade = async(req,res)=>{
         if (!trade) {
             return res.status(404).json({ error: 'Trade not found' });
         }
-
+        const emailId = trade.buyerEmail;
         trade.status = status;
         await trade.save();
-        eventEmitter('tradeUpdated',trade);
+        eventEmitter('tradeUpdated',trade,emailId);
         res.json({ message: 'Trade status updated', trade });
     } catch (error) {
         res.status(500).json({ error: 'Failed to update trade status' });

@@ -1,5 +1,5 @@
 const Cargo = require("../models/cargoD");
-const eventEmitter = require("../utilis/eventEmitter");
+const eventEmitter = require('../utilis/eventprocessing')
 
 // Create a new cargo shipment
 exports.createCargo = async (req, res) => {
@@ -9,7 +9,7 @@ exports.createCargo = async (req, res) => {
     
     await cargo.save();
     const emailId = cargo.emailId;
-    eventEmitter.emit('cargoUpdated',cargo,emailId);
+    eventEmitter.emit('cargoUpdated',cargo);
     res.status(201).json(cargo);
 
 

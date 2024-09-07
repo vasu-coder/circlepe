@@ -1,9 +1,35 @@
 const Inventory = require('../models/inventory');
-const trade =require('../models/trade');
-const cargo = require('../models/cargoD');
-const eventEmitter = require('./eventEmitter');
+const Trade =require('../models/trade');
+const Cargo = require('../models/cargoD');
+
 const{sendNotification} = require('./notificationSys');
-eventEmitter.on('tradeUpdated', async (trade) => {
+const EventEmitter = require('events');
+const eventEmitter = new EventEmitter();
+eventEmitter.on('tradeCreate',async(trade)=>{
+    try {
+        console.log('Trade created for destination:', trade.destination);
+
+        // Find the cargo shipment with the same destination
+        const cargo = await Cargo.findOne({ destination: trade.destination });
+
+        if (!cargo) {
+            console.log(`No cargo shipment found for destination ${trade.destination}.`);
+            return;
+        }
+
+        // Add the trade items to the cargo
+        cargo.items.push(...trade.items);
+        await cargo.save();
+
+        console.log('Cargo updated with trade items:', cargo._id);
+
+        // Emit event to update the inventory with cargo items
+        eventEmitter.emit('cargoUpdated', cargo);
+    } catch (err) {
+        console.error('Error updating cargo with trade:', err);
+    }
+})
+eventEmitter.on('tradeUpdated', async (trade,emailId) => {
     try {
         const inventory = await Inventory.findOne({ stationId: trade.stationId });
 
@@ -23,6 +49,11 @@ eventEmitter.on('tradeUpdated', async (trade) => {
         });
 
         await inventory.save();
+        await sendNotification({
+            subject: `Critical Event Detected`,
+            message: `Shipment ${trade._id} is in ${trade.status}`,
+            email: emailId
+        });
         console.log('Inventory updated for station:', trade.stationId);
     } catch (err) {
         console.error('Error updating inventory:', err);
@@ -34,7 +65,7 @@ eventEmitter.on('cargoUpdated', async (cargo) => {
     try {
         // 1. Log the shipment status and perform different actions based on the status.
         console.log('Shipment status updated for cargo:', cargo._id, 'Status:', cargo.status);
-
+        
         // 2. Check if the shipment is delayed and send a notification.
         if (cargo.status === 'delayed') {
             console.log('Shipment has been delayed:', cargo._id);
@@ -85,7 +116,7 @@ eventEmitter.on('cargoUpdated', async (cargo) => {
 
             // Send notification to the destination station
             await sendNotification({
-                
+                subject: `Critical Event Detected`,
                 message: `Shipment ${cargo._id} has been delivered to ${cargo.destination}. Inventory updated.`,
                 email: [`station@${cargo.destination}.com`]
             });
@@ -113,7 +144,7 @@ eventEmitter.on('cargoUpdated', async (cargo) => {
 });
 
 // Critical event processing for real-time shipment delays
-eventEmitter.on('criticalEvent', async (event) => {
-    console.log('Critical event occurred:', event.message);
-    // You can add logic here to send notifications or alerts
+eventEmitter.on('criticalEvent', async (data) => {
+    sendNotification({subject:`Critical Event Detected`, message:data.message, email:data.emailId});  
 });
+module.exports = eventEmitter;
